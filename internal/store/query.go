@@ -52,3 +52,17 @@ func (s *Store) LatestByJob() (map[string]*logentry.Entry, error) {
 	}
 	return latest, nil
 }
+
+// CountByJob returns the number of log entries recorded for each distinct job name.
+func (s *Store) CountByJob() (map[string]int, error) {
+	all, err := s.ReadAll()
+	if err != nil {
+		return nil, err
+	}
+
+	counts := make(map[string]int)
+	for _, e := range all {
+		counts[e.Job]++
+	}
+	return counts, nil
+}
