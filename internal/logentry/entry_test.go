@@ -57,6 +57,17 @@ func TestFinish_Failure(t *testing.T) {
 	}
 }
 
+func TestFinish_SetsFinishedAt(t *testing.T) {
+	e := New("report", "generate-report")
+	before := time.Now().UTC()
+	e.Finish(0, "ok", "")
+	after := time.Now().UTC()
+
+	if e.FinishedAt.Before(before) || e.FinishedAt.After(after) {
+		t.Error("FinishedAt is not within expected range")
+	}
+}
+
 func TestAddLabel(t *testing.T) {
 	e := New("report", "generate-report")
 	e.AddLabel("env", "production")
